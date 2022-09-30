@@ -1,5 +1,6 @@
 import subprocess
 import optparse 
+import re
 
 # get arguments from user input
 def get_arguments():
@@ -17,13 +18,31 @@ def get_arguments():
 
 # function need an interface and a mac address as arguments
 def change_mac(interface, new_mac):
-    print(f"\n[+] Changing MAC address for {interface} to {new_mac}")
+    print(f"\n[+] Changing MAC address for {interface}...")
     subprocess.call(["ifconfig", interface, "down"])
     subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
     subprocess.call(["ifconfig", interface, "up"])
 
+# get current mac from ifconfig output
+def get_current_mac(interface):
+    ifconfig_result = subprocess.check_output(["ifconfig", interface]).decode('utf-8')
+
+    mac_result = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", ifconfig_result)
+
+    if mac_result:
+        return mac_result.group(0)
+    else:
+        print("[-] Error. Could not read mac address.")
 
 
 options = get_arguments()
+current_mac = get_current_mac(options.interface)
+print(f"Current MAC = {str(current_mac)}")
 
 change_mac(options.interface, options.new_mac)
+
+current_mac = get_current_mac(options.interface)
+if current_mac == options.new_mac:
+    print(f"MAC address was successfully changed to {options.new_mac}")
+else:
+    print("MAC address did not get changed!")
