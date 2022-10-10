@@ -13,4 +13,4 @@ A simple program to change the MAC address
 
 - Example:
  
-`> python3 mac_changer.py -i eth0 -m 22:44:66:33:55:77`
+`> python3 change-mac.py -i eth0 -m 22:44:66:33:55:77`
