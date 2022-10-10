@@ -1,5 +1,6 @@
 # ChangeMac
-A simple program to change the MAC address
+### A simple program to change the MAC address.
+[this program is for learning purposes]
 
  - When run the program pass an interface and the new mac address as arguments
 
